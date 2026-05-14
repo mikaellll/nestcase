@@ -6,7 +6,7 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { AuthHydrator } from "@/components/AuthHydrator";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nestcase.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://nestcase.com'),
   title: {
     default: "NestCase — Coques Premium pour Smartphone",
     template: "%s | NestCase",
