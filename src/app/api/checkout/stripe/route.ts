@@ -8,7 +8,7 @@ function baseUrl(req: Request): string {
   const host = req.headers.get('host');
   const proto = req.headers.get('x-forwarded-proto') ?? 'http';
   if (host) return `${proto}://${host}`;
-  return 'http://localhost:3000';
+  return process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nestcase.com';
 }
 
 export async function POST(req: Request) {
