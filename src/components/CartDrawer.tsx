@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export function CartDrawer() {
+  const router = useRouter();
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice, totalItems } = useCartStore();
   const count = totalItems();
   const total = totalPrice();
@@ -230,8 +232,13 @@ export function CartDrawer() {
 
             <button
               id="checkout-btn"
+              type="button"
               className="btn-primary"
               style={{ width: '100%', padding: '14px', borderRadius: '14px', fontSize: '0.95rem' }}
+              onClick={() => {
+                closeCart();
+                router.push('/checkout');
+              }}
             >
               Commander maintenant <ArrowRight size={16} />
             </button>

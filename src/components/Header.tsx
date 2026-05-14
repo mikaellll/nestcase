@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { ShoppingBag, Search, Menu, X, Zap } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, Zap, User } from 'lucide-react';
 import { useCartStore } from '@/lib/store';
+import { useAuthStore } from '@/lib/auth-store';
 import { SearchModal } from './SearchModal';
 
 export function Header() {
@@ -12,6 +13,12 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const { toggleCart, totalItems } = useCartStore();
   const itemCount = totalItems();
+  const { user, hydrated, setUser } = useAuthStore();
+
+  async function logout() {
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+    setUser(null);
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -125,6 +132,48 @@ export function Header() {
 
           {/* Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {hydrated && user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} className="desktop-nav">
+                <span style={{ color: '#94a3b8', fontSize: '0.8rem', maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={user.email}>
+                  {user.name}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => void logout()}
+                  style={{
+                    padding: '8px 12px',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    background: 'transparent',
+                    color: '#94a3b8',
+                    fontSize: '0.8rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Déconnexion
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/connexion"
+                className="desktop-nav"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 14px',
+                  borderRadius: '10px',
+                  color: '#94a3b8',
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: 500,
+                }}
+              >
+                <User size={16} />
+                Connexion
+              </Link>
+            )}
+
             <button
               id="search-btn"
               className="btn-icon"
@@ -198,6 +247,59 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/inscription"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                display: 'block',
+                padding: '12px 0',
+                color: '#818cf8',
+                textDecoration: 'none',
+                fontSize: '1rem',
+                fontWeight: 600,
+                borderBottom: '1px solid rgba(255,255,255,0.05)',
+              }}
+            >
+              Créer un compte
+            </Link>
+            {hydrated && user ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  void logout();
+                }}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  textAlign: 'left',
+                  padding: '12px 0',
+                  color: '#94a3b8',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: '1px solid rgba(255,255,255,0.05)',
+                  fontSize: '1rem',
+                  cursor: 'pointer',
+                }}
+              >
+                Déconnexion ({user.name})
+              </button>
+            ) : (
+              <Link
+                href="/connexion"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: 'block',
+                  padding: '12px 0',
+                  color: '#818cf8',
+                  textDecoration: 'none',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                }}
+              >
+                Connexion
+              </Link>
+            )}
           </div>
         )}
       </header>
