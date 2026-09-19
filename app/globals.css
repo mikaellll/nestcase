@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-blue: #2FAEE0;
-  --color-brand-darkblue: #03224C;
-  --color-brand-black: #000000;
-  --color-brand-white: #FFFFFF;
+  --color-brand-black: #0B0D0F;
+  --color-brand-white: #F7F7F5;
+  --color-brand-graphite: #24272B;
+  --color-brand-gray: #E5E7EB;
+  --color-brand-blue: #3B82F6;
   
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-oswald), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  --background: #000000;
-  --foreground: #FFFFFF;
+  --background: #F7F7F5; /* Light theme by default for modern e-commerce */
+  --foreground: #0B0D0F;
 }
 
 body {

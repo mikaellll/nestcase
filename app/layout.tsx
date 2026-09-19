@@ -1,7 +1,12 @@
+
 import type { Metadata, Viewport } from "next";
-import { Inter, Oswald } from "next/font/google";
+import { Inter } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import CartDrawer from "@/components/cart/CartDrawer";
+import ConvexClientProvider from "./ConvexClientProvider";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const inter = Inter({
@@ -10,29 +15,31 @@ const inter = Inter({
   display: "swap",
 });
 
-const oswald = Oswald({
-  variable: "--font-oswald",
-  subsets: ["latin"],
-  display: "swap",
-});
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nestcase.vercel.app";
 
 export const metadata: Metadata = {
-  title: 'Striking Camp | Le Meilleur Club de Boxe & Pieds-Poings à Marseille',
-  description: "Le club de référence à Marseille pour les sports de combat : Boxe Anglaise, Kick Boxing, Muay Thaï, et cours Lady Striking 100% femmes. Rejoignez l'excellence avec le meilleur coach individuel de la cité phocéenne.",
-  keywords: "club de boxe marseille, pieds poings marseille, kick boxing marseille, boxe thaï marseille, lady boxing, lady striking, meilleur coach boxe marseille, sport de combat 13010, salle de sport marseille, mma striking",
-  authors: [{ name: "Striking Camp" }],
+  metadataBase: new URL(siteUrl),
+  title: 'Nestcase | Accessoires technologiques modernes',
+  description: "Chargeurs, câbles et supports de téléphone premium pensés pour votre quotidien. Fiables, élégants et accessibles.",
+  keywords: "chargeur rapide, câble usb-c, support téléphone, accessoires smartphone, nestcase",
+  authors: [{ name: "Nestcase" }],
   openGraph: {
-    title: 'Striking Camp | Boxe & Pieds-Poings à Marseille',
-    description: "Le club de référence à Marseille pour les sports de combat : Boxe Anglaise, Kick Boxing, Muay Thaï. Cours professionnels et section Lady 100% femmes.",
-    url: 'https://strikingcamp.com',
-    siteName: 'Striking Camp',
+    title: 'Nestcase | Accessoires technologiques premium',
+    description: "Chargeurs, câbles et supports pensés pour votre quotidien.",
+    url: siteUrl,
+    siteName: 'Nestcase',
     locale: 'fr_FR',
     type: 'website',
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nestcase | Accessoires technologiques premium",
+    description: "Chargeurs, câbles et supports pensés pour votre quotidien.",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#0B0D0F",
 };
 
 export default function RootLayout({
@@ -41,11 +48,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${inter.variable} ${oswald.variable} antialiased scroll-smooth`}>
-      <body suppressHydrationWarning className="min-h-screen bg-brand-black text-brand-white flex flex-col font-sans">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+    <html lang="fr" className={`${inter.variable} antialiased scroll-smooth`} data-scroll-behavior="smooth">
+      <body suppressHydrationWarning className="min-h-screen bg-brand-white text-brand-black flex flex-col font-sans">
+        <ConvexAuthNextjsServerProvider>
+          <ConvexClientProvider>
+            <Navbar />
+            <CartDrawer />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+            <Analytics />
+          </ConvexClientProvider>
+        </ConvexAuthNextjsServerProvider>
       </body>
     </html>
   );

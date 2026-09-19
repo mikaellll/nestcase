@@ -1,0 +1,81 @@
+"use client";
+
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+export default function RegisterPage() {
+  const { signIn, signOut } = useAuthActions();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    // Nettoyage automatique des anciennes sessions/cookies corrompus
+    signOut().catch(() => {});
+  }, [signOut]);
+
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+    try {
+      await signIn("password", { email: normalizedEmail, password, flow: "signUp" });
+      router.push("/account");
+    } catch (err: any) {
+      console.error("Erreur brute d'inscription :", err);
+      setError(err.message || "Erreur inconnue lors de l'inscription. Vérifiez la console.");
+    }
+  };
+
+  return (
+    <div className="min-h-screen pt-32 pb-24 flex items-center justify-center bg-brand-white px-4">
+      <div className="w-full max-w-md bg-brand-white p-8 rounded-3xl border border-brand-gray shadow-sm">
+        <h1 className="text-3xl font-black text-brand-black mb-2 text-center">Nouveau client</h1>
+        <p className="text-brand-graphite mb-8 text-center">Créez votre compte Nestcase.</p>
+        
+        {error && <div className="mb-4 text-red-500 text-sm text-center">{error}</div>}
+
+        <form onSubmit={handleSignUp} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-brand-graphite mb-2">Email</label>
+            <input 
+              type="email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+              className="w-full px-4 py-3 rounded-xl border border-brand-gray focus:outline-none focus:border-brand-black transition-colors" 
+              placeholder="votre@email.com" 
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-brand-graphite mb-2">Mot de passe</label>
+            <input 
+              type="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
+              className="w-full px-4 py-3 rounded-xl border border-brand-gray focus:outline-none focus:border-brand-black transition-colors" 
+              placeholder="••••••••" 
+            />
+          </div>
+          <button 
+            type="submit" 
+            className="w-full py-4 mt-4 bg-brand-black text-brand-white font-bold rounded-xl hover:bg-brand-graphite transition-colors"
+          >
+            Créer mon compte
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-brand-graphite text-sm">
+          Déjà un compte ?{" "}
+          <Link href="/login" className="text-brand-black font-semibold hover:underline">
+            Se connecter
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}

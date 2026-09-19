@@ -1,56 +1,37 @@
 import { MetadataRoute } from 'next';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://strikingcamp.com';
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nestcase.vercel.app';
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/club`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/coach`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/planning`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/mentions-legales`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.1,
-    },
-    {
-      url: `${baseUrl}/confidentialite`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.1,
-    },
-    {
-      url: `${baseUrl}/cookies`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.1,
-    },
+  // Base routes for e-commerce
+  const routes = [
+    '',
+    '/shop',
+    '/about',
+    '/contact',
+    '/faq',
+    '/shipping',
+    '/returns',
+    '/warranty',
+    '/privacy',
+    '/terms',
+    '/cookies',
+    '/legal',
+    '/accessibility',
   ];
+
+  const sitemapEntries = routes.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: route === '' || route === '/shop' ? 'daily' : 'monthly',
+    priority: route === '' ? 1.0 : route === '/shop' ? 0.9 : 0.5,
+  })) as MetadataRoute.Sitemap;
+
+  // In a real-world scenario, you would fetch all products from Convex here using ConvexHttpClient
+  // and append them to the sitemapEntries array.
+  // Example: 
+  // const products = await fetchProducts();
+  // products.forEach(p => sitemapEntries.push({ url: `${baseUrl}/shop/${p.slug}`, ... }))
+
+  return sitemapEntries;
 }
