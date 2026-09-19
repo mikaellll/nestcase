@@ -13,7 +13,12 @@ export default function RegisterPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Nettoyage automatique des anciennes sessions/cookies corrompus
+    // Force la suppression des cookies côté client immédiatement
+    if (typeof document !== "undefined") {
+      document.cookie = "convex_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "convex_refresh_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+    // Nettoyage automatique via l'API pour être sûr
     signOut().catch(() => {});
   }, [signOut]);
 
