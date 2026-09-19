@@ -1,5 +1,5 @@
 import { api } from "@/convex/_generated/api";
-import { ConvexHttpClient } from "convex/browser";
+import { fetchQuery } from "convex/nextjs";
 import { notFound } from "next/navigation";
 import AddToCartClient from "@/components/product/AddToCartClient";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
@@ -7,7 +7,6 @@ import { JsonLd, generateProductSchema } from "@/components/seo/JsonLd";
 import { ShieldCheck, Truck, RotateCcw } from "lucide-react";
 import { Metadata } from "next";
 
-const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nestcase.vercel.app";
 
 type Props = {
@@ -16,7 +15,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
-  const product = await convex.query(api.products.getProductBySlug, { slug: resolvedParams.slug });
+  const product = await fetchQuery(api.products.getProductBySlug, { slug: resolvedParams.slug });
   
   if (!product) {
     return { title: 'Produit introuvable | Nestcase' };
@@ -40,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const resolvedParams = await params;
-  const product = await convex.query(api.products.getProductBySlug, { slug: resolvedParams.slug });
+  const product = await fetchQuery(api.products.getProductBySlug, { slug: resolvedParams.slug });
 
   if (!product) {
     notFound();
