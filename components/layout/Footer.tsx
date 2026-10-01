@@ -53,9 +53,18 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-brand-graphite text-center md:flex md:justify-between items-center text-brand-gray text-sm">
-          <p>© {new Date().getFullYear()} Nestcase. Tous droits réservés.</p>
-          <div className="mt-4 md:mt-0 flex justify-center space-x-4">
+        <div className="pt-8 border-t border-brand-graphite text-center md:flex md:justify-between items-center text-brand-gray text-sm flex-wrap gap-4">
+          <div className="w-full md:w-auto text-center md:text-left order-2 md:order-1 mt-4 md:mt-0">
+            <p>© {new Date().getFullYear()} Nestcase. Tous droits réservés.</p>
+          </div>
+          
+          <div className="w-full md:w-auto text-center order-1 md:order-2">
+            <p className="text-xs">
+              Developed and designed by <a href="https://mickaelcode.com" target="_blank" rel="noopener noreferrer" className="text-[#00FFCC] font-bold hover:text-brand-white transition-colors drop-shadow-[0_0_8px_rgba(0,255,204,0.8)]">Mickael</a>
+            </p>
+          </div>
+
+          <div className="w-full md:w-auto flex justify-center order-3 md:order-3 mt-4 md:mt-0 space-x-4">
             <span>Paiement Sécurisé : Stripe & PayPal</span>
           </div>
         </div>
