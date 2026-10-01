@@ -2,7 +2,7 @@ import HeroEcommerce from "@/components/sections/HeroEcommerce";
 import { JsonLd, generateOrganizationSchema, generateWebsiteSchema } from "@/components/seo/JsonLd";
 
 export default function Home() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nestcase.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nestcase.com";
   
   return (
     <>

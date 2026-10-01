@@ -22,6 +22,7 @@ export function generateWebsiteSchema(siteUrl: string, companyName: string) {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": companyName,
+    "alternateName": "Nestcase.com",
     "url": siteUrl,
     "potentialAction": {
       "@type": "SearchAction",
