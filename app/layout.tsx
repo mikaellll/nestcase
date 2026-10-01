@@ -14,9 +14,7 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 });
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nestcase.vercel.app";
-
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nestcase.com";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: 'Nestcase | Accessoires technologiques modernes',

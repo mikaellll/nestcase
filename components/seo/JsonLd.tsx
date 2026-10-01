@@ -13,7 +13,7 @@ export function generateOrganizationSchema(siteUrl: string, companyName: string)
     "@type": "Organization",
     "name": companyName,
     "url": siteUrl,
-    "logo": `${siteUrl}/logo.png`, // Update this path to the actual logo
+    "logo": `${siteUrl}/LogoNestcase.jpg`,
   };
 }
 

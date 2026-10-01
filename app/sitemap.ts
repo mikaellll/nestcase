@@ -1,7 +1,10 @@
 import { MetadataRoute } from 'next';
+import { api } from "@/convex/_generated/api";
+import { fetchQuery } from "convex/nextjs";
 
+export const dynamic = 'force-dynamic';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nestcase.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nestcase.com';
 
   // Base routes for e-commerce
   const routes = [
@@ -20,18 +23,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/accessibility',
   ];
 
-  const sitemapEntries = routes.map((route) => ({
+  const sitemapEntries: MetadataRoute.Sitemap = routes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: route === '' || route === '/shop' ? 'daily' : 'monthly',
     priority: route === '' ? 1.0 : route === '/shop' ? 0.9 : 0.5,
-  })) as MetadataRoute.Sitemap;
+  }));
 
-  // In a real-world scenario, you would fetch all products from Convex here using ConvexHttpClient
-  // and append them to the sitemapEntries array.
-  // Example: 
-  // const products = await fetchProducts();
-  // products.forEach(p => sitemapEntries.push({ url: `${baseUrl}/shop/${p.slug}`, ... }))
+  try {
+    const products = await fetchQuery(api.products.getProducts);
+    
+    if (products && products.length > 0) {
+      products.forEach(p => {
+        sitemapEntries.push({
+          url: `${baseUrl}/shop/${p.slug}`,
+          lastModified: new Date(p._creationTime),
+          changeFrequency: 'weekly',
+          priority: 0.8,
+        });
+      });
+    }
+  } catch (error) {
+    console.error("Failed to fetch products for sitemap:", error);
+  }
 
   return sitemapEntries;
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ShoppingBag, Search, User } from "lucide-react";
+import Image from "next/image";
 import { useCartStore } from "@/lib/store/useCartStore";
 
 export default function Navbar() {
@@ -32,8 +33,14 @@ export default function Navbar() {
         <div className="flex justify-between items-center">
           
           {/* Logo */}
-          <Link href="/" className="font-heading font-black text-2xl tracking-tighter text-brand-black">
-            NESTCASE
+          <Link href="/" className="relative flex items-center h-8 w-32 md:h-10 md:w-40">
+            <Image 
+              src="/LogoNestcase.jpg"
+              alt="Nestcase Logo"
+              fill
+              className="object-contain object-left"
+              priority
+            />
           </Link>
 
           {/* Desktop Menu */}

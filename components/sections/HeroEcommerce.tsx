@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function HeroEcommerce() {
   return (
@@ -54,13 +55,15 @@ export default function HeroEcommerce() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="flex-1 w-full max-w-lg aspect-square relative rounded-3xl overflow-hidden shadow-2xl bg-brand-gray flex items-center justify-center"
+          className="flex-1 w-full max-w-lg aspect-square relative rounded-3xl overflow-hidden shadow-2xl bg-brand-gray"
         >
-          {/* Placeholder for real product image */}
-          <div className="text-brand-graphite text-center">
-            <span className="block text-4xl mb-4">⚡</span>
-            <span className="font-semibold text-lg">Visuel Produit Premium</span>
-          </div>
+          <Image
+            src="/hero-banner.png"
+            alt="Nestcase Premium Cases"
+            fill
+            className="object-cover"
+            priority
+          />
         </motion.div>
       </div>
     </section>

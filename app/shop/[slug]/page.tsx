@@ -7,7 +7,7 @@ import { JsonLd, generateProductSchema } from "@/components/seo/JsonLd";
 import { ShieldCheck, Truck, RotateCcw } from "lucide-react";
 import { Metadata } from "next";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nestcase.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nestcase.com";
 
 type Props = {
   params: { slug: string };
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${product.name} | Nestcase`,
     description: product.description.substring(0, 160),
     alternates: {
-      canonical: `/shop/${product.slug}`,
+      canonical: `${siteUrl}/shop/${product.slug}`,
     },
     openGraph: {
       title: `${product.name} | Nestcase`,
